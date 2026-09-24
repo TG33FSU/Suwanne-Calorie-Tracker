@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Suwannee Tracker" />
+<meta name="theme-color" content="#F7F5F0" />
+<title>Suwannee Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <p class="brand-word">Suwannee</p>
+      <h1>Dining Tracker</h1>
+    </div>
+    <button class="icon-btn" id="editGoals" aria-label="Settings">⚙</button>
+  </header>
+
+  <nav class="date-strip">
+    <button id="prevDay" class="date-arrow" aria-label="Previous day">‹</button>
+    <div class="date-center">
+      <input type="date" id="datePicker" />
+      <button class="today-pill" id="todayBtn">Today</button>
+    </div>
+    <button id="nextDay" class="date-arrow" aria-label="Next day">›</button>
+  </nav>
+
+  <main class="stack">
+
+    <div class="col-main">
+      <section class="nutrition-hero">
+        <p class="hero-eyebrow">Today's Nutrition</p>
+        <div class="hero-cals">
+          <span id="caloriesRemaining">0</span>
+          <span class="hero-goal" id="calorieGoalDisplay"></span>
+        </div>
+        <p class="hero-sub" id="ringLabel">logged today</p>
+
+        <div class="macro-grid">
+          <div class="macro-col">
+            <p class="macro-label">Protein</p>
+            <p class="macro-num" id="proteinValue">0g</p>
+            <div class="macro-track"><div class="macro-fill protein" id="proteinFill"></div></div>
+          </div>
+          <div class="macro-col">
+            <p class="macro-label">Carbs</p>
+            <p class="macro-num" id="carbsValue">0g</p>
+            <div class="macro-track"><div class="macro-fill carbs" id="carbsFill"></div></div>
+          </div>
+          <div class="macro-col">
+            <p class="macro-label">Fat</p>
+            <p class="macro-num" id="fatValue">0g</p>
+            <div class="macro-track"><div class="macro-fill fat" id="fatFill"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="diary">
+        <h2 class="section-title">Today's Diary</h2>
+
+        <div class="meal-card" data-meal="breakfast">
+          <div class="meal-card-head">
+            <h3>Breakfast</h3>
+            <span class="meal-total" data-total="breakfast">0 cal</span>
+          </div>
+          <ul class="entry-list" data-list="breakfast"></ul>
+          <button class="add-food-btn" data-meal-add="breakfast">+ Add food</button>
+        </div>
+
+        <div class="meal-card" data-meal="lunch">
+          <div class="meal-card-head">
+            <h3>Lunch</h3>
+            <span class="meal-total" data-total="lunch">0 cal</span>
+          </div>
+          <ul class="entry-list" data-list="lunch"></ul>
+          <button class="add-food-btn" data-meal-add="lunch">+ Add food</button>
+        </div>
+
+        <div class="meal-card" data-meal="dinner">
+          <div class="meal-card-head">
+            <h3>Dinner</h3>
+            <span class="meal-total" data-total="dinner">0 cal</span>
+          </div>
+          <ul class="entry-list" data-list="dinner"></ul>
+          <button class="add-food-btn" data-meal-add="dinner">+ Add food</button>
+        </div>
+
+        <div class="meal-card" data-meal="snacks">
+          <div class="meal-card-head">
+            <h3>Snacks</h3>
+            <span class="meal-total" data-total="snacks">0 cal</span>
+          </div>
+          <ul class="entry-list" data-list="snacks"></ul>
+          <button class="add-food-btn" data-meal-add="snacks">+ Add food</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-side">
+      <section class="sync-card">
+        <div class="sync-card-icon" aria-hidden="true">🍽</div>
+        <div class="sync-card-body">
+          <p class="sync-card-title">Suwannee Room</p>
+          <p class="sync-card-sub" id="syncStatus">Today's menu hasn't been synced yet</p>
+        </div>
+        <button id="syncMenu" class="secondary-btn">
+          <span id="syncLabel">Sync today's menu</span>
+        </button>
+      </section>
+
+      <section class="menu-preview-card hidden" id="menuPreviewCard">
+        <h2 class="section-title">Today at Suwannee</h2>
+        <div id="menuPreviewList"></div>
+      </section>
+
+      <section class="insight-card hidden" id="insightCard">
+        <h2 class="section-title">Today's Insight</h2>
+        <p id="insightText"></p>
+      </section>
+
+      <section class="favorites-panel hidden" id="favoritesPanel">
+        <h2 class="section-title">Your Favorites</h2>
+        <p class="hint favorites-hint">Rated by you — expand any diary item to rate it</p>
+        <div class="favorites-list" id="favoritesList"></div>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+<!-- Add food dialog -->
+<dialog id="addFoodDialog">
+  <div class="dialog-head">
+    <h2>Add to <span id="dialogMealName">meal</span></h2>
+    <button class="icon-btn" id="closeDialog" aria-label="Close">&times;</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="menu">Suwannee Room</button>
+    <button class="tab-btn" data-tab="custom">My Foods</button>
+    <button class="tab-btn" data-tab="manual">Quick Add</button>
+  </div>
+  <p class="dialog-error hidden" id="dialogError"></p>
+
+  <div class="tab-panel" data-panel="menu">
+    <input type="text" id="menuSearch" placeholder="Search today's menu (e.g. grilled chicken)" />
+    <ul class="food-results" id="menuResults"></ul>
+  </div>
+
+  <div class="tab-panel hidden" data-panel="custom">
+    <ul class="food-results" id="customResults"></ul>
+    <p class="hint">Foods you quick-add get saved here so you can reuse them.</p>
+  </div>
+
+  <div class="tab-panel hidden" data-panel="manual">
+    <p class="hint" id="manualHint"></p>
+    <form id="manualForm" class="manual-form">
+      <label>Food name <input type="text" name="name" required placeholder="e.g. Chick-fil-A sandwich" /></label>
+      <div class="grid2">
+        <label>Calories <input type="number" name="calories" required min="0" /></label>
+        <label>Serving size <input type="text" name="servingSize" placeholder="1 sandwich" /></label>
+      </div>
+      <div class="grid3">
+        <label>Protein (g) <input type="number" name="protein" min="0" /></label>
+        <label>Carbs (g) <input type="number" name="totalCarbs" min="0" /></label>
+        <label>Fat (g) <input type="number" name="totalFat" min="0" /></label>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" name="save" checked /> Save to "My Foods" for later</label>
+      <button type="submit" class="primary-btn">Add to diary</button>
+    </form>
+  </div>
+
+  <!-- Serving picker shown after selecting a menu/custom item -->
+  <div class="tab-panel hidden" data-panel="serving">
+    <h3 id="servingFoodName"></h3>
+    <p class="muted" id="servingBase"></p>
+    <label>Servings
+      <input type="number" id="servingCount" value="1" min="0.25" step="0.25" />
+    </label>
+    <div class="serving-preview" id="servingPreview"></div>
+    <button class="primary-btn" id="confirmAdd">Add to diary</button>
+  </div>
+</dialog>
+
+<!-- Goals dialog -->
+<dialog id="goalsDialog">
+  <div class="dialog-head">
+    <h2>Daily Goals</h2>
+    <button class="icon-btn" id="closeGoals" aria-label="Close">&times;</button>
+  </div>
+  <form id="goalsForm" class="manual-form">
+    <label>Calories <input type="number" name="calorieGoal" min="0" required /></label>
+    <div class="grid3">
+      <label>Protein (g) <input type="number" name="proteinGoal" min="0" /></label>
+      <label>Carbs (g) <input type="number" name="carbGoal" min="0" /></label>
+      <label>Fat (g) <input type="number" name="fatGoal" min="0" /></label>
+    </div>
+    <button type="submit" class="primary-btn">Save goals</button>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

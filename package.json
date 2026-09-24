@@ -1,0 +1,14 @@
+{
+  "name": "dininghall-tracker",
+  "version": "1.0.0",
+  "description": "Calorie tracker for Suwannee Room (FSU Seminole Dining) with a MyFitnessPal-style diary",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "puppeteer": "^22.15.0",
+    "mongodb": "^6.9.0"
+  }
+}
